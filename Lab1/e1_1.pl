@@ -58,15 +58,36 @@ happy(Y) :-
 	likes(X,Y).
 
 /* Queries to see if the programs work are listed below.
-1. Who is happy - happy(X).
-2. Who likes who - likes(X,Y).
-3. How many likes ulrika - findall(X, likes(X,ulrika), L), length(L, N).
+1. | ?- happy(X). % Who (X) is happy.
+	X = nisse ? ;
+	X = bettan ? ;
+	X = peter ? ;
+	X = ulrika ? ;
+	no
+2. likes(X,Y). % Who (X) likes who (Y).
+	X = nisse,
+	Y = ulrika ? ;
+	X = peter,
+	Y = ulrika ? ;
+	X = bosse,
+	Y = ulrika ? ;
+	X = ulrika,
+	Y = peter ? ;
+	no
+3.	findall(X, likes(X,ulrika), L), length(L, N). % Who (L) likes ulrika and 											   % how many (N) are they.
+	L = [nisse,peter,bosse],
+	N = 3 ? ;
+	no
 */
 
 % In what way should you arrange the clauses (rules and facts) in the program?
 %
 % You should arrange the clauses of the program so it would be so efficient
 % and effective as possible.
+% We also want to arrange them so we can terminate and dont reach the infinity
+% loop. The program is read from top to bottom so for example we want
+% to have a "base" predicate before the recursion predicate, so we
+% can terminate.
 
 % In what way should the premises of rules be arranged?
 %
@@ -74,6 +95,9 @@ happy(Y) :-
 % terminate. We dont want the infinity loop.
 % Otherwise should them be arranged so the program will be so effective
 % and efficient as possible.
+% We want to get as much information as possible before we do the "big" check,
+% for example we can check if X and Y is a man and women before we check if
+% they like each other.
 
 
 

@@ -13,15 +13,15 @@ connected(f,g).
 path(X,Y) :-
 	connected(X,Y).
 
-% Recursion to check if there is path between X and Y.
-% Record the path between X and Y.
-path(X,Y,[X,Z|List]) :-
-	connected(X,Z),
-	path(Z,Y,[Z|List]).
-
 % Base case for the recursion.
 path(X,Y,[X,Y]) :-
 	connected(X,Y).
+
+% Recursion to check if there is path between X and Y.
+% Record the path between X and Y in the list.
+path(X,Y,[X,Z|List]) :-
+	connected(X,Z),
+	path(Z,Y,[Z|List]).
 
 % Describes the relation between two nodes X and Y, 
 % with both the path and the length of the path from X to Y.

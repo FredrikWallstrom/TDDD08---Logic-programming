@@ -14,43 +14,50 @@ strong(peter).
 strong(bosse).
 kind(bosse).
 
-% All men likes beautiful womans.
+% likes(X, Y).
+% A man like a women if she is beautiful.
 likes(X,Y) :- 
 	man(X), 
 	woman(Y), 
 	beautiful(Y).
 
+% likes(nisse, Y).
 % Nisse likes all women who like him
 likes(nisse, Y) :- 
 	woman(Y),
 	likes(Y,nisse).
 
-% Ulrika likes all men who likes her, provided they are rich and kind.
+% likes(ulrika, X).
+% Ulrika likes all men who likes her if they are rich and kind.
 likes(ulrika, X) :- 
 	man(X), 
 	rich(X), 
 	kind(x),
 	likes(X,ulrika).
 
-% Ulrika likes all men who likes her, provided they are beatiful and strong.
+% likes(ulrika, X).
+% Ulrika likes all men who likes her if they are beautiful and strong.
 likes(ulrika, X) :- 
 	man(X),
 	beautiful(X), 
 	strong(X),
 	likes(X,ulrika).
 
-% All rich men/woman (X) are happy.
+% happy(X)
+% All rich are happy.
 happy(X) :- 
 	rich(X).
 
-% Men (X) who like a woman (Y) who likes him are happy.
+% happy(X).
+% If a man likes a women that likes him, then he is happy.
 happy(X) :- 
 	man(X), 
 	woman(Y), 
 	likes(X,Y), 
 	likes(Y,X).
 
-% Woman (Y) who like a man (X) who likes her are happy.
+% happy(Y)
+% If a woman likes a man that likes her, then she is happy.
 happy(Y) :- 
 	man(X), 
 	woman(Y), 

@@ -1,3 +1,4 @@
+% Facts.
 connected(a,b).
 connected(a,c).
 connected(b,c).
@@ -9,22 +10,28 @@ connected(e,f).
 connected(e,g).
 connected(f,g).
 
+% path(X,Y).
 % Two nodes X and Y are related if there is a edge between them.
 path(X,Y) :-
 	connected(X,Y).
 
-% Base case for the recursion.
+% path(X,Y,[X,Y]).
+% It is a path between two nodes if them are connected.
 path(X,Y,[X,Y]) :-
 	connected(X,Y).
 
-% Recursion to check if there is path between X and Y.
-% Record the path between X and Y in the list.
+% path(X,Y,[X,Z|List]).
+% If two nodes X and Z are connected and
+% if it is a path between Z and Y, then
+% there is a path between X and Y.
 path(X,Y,[X,Z|List]) :-
 	connected(X,Z),
 	path(Z,Y,[Z|List]).
 
-% Describes the relation between two nodes X and Y, 
-% with both the path and the length of the path from X to Y.
+% npath(X,Y,[N|List])
+% If there is a path between X and Y and
+% if the length of that path is N, then
+% there is a descriptive path from X and Y.
 npath(X,Y,[N|List]) :-
 	path(X,Y,List),
 	length(List,N).

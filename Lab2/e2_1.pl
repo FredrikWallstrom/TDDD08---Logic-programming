@@ -20,7 +20,7 @@ min_in_list([X, Y | L], Min) :-
 
 % delete_from_list(L, E, L1).
 % L1 is the same list as L but without the element E.
-delete_from_list([Del|L], E, L).
+delete_from_list([E|L], E, L).
 delete_from_list([H|L], E, [H|L1]) :-
 	delete_from_list(L, E, L1).
 
@@ -51,5 +51,25 @@ qsort([N | L], LS) :-
 	split(L, N, Less, More),
 	qsort(Less, L1),
 	qsort(More, L2),
-	print(L2),
 	append(L1,  [N | L2], LS).
+
+/* Example queries for the program are listed below.
+
+| ?- sorted([1,2,3,4,5]).
+yes
+| ?- sorted([5,4,3,2,1]).
+no
+| ?- ssort([1,2,3,4,5], Res).
+Res = [1,2,3,4,5] ? ;
+no
+| ?- ssort([5,4,3,2,1], Res).
+Res = [1,2,3,4,5] ? ;
+no
+| ?- qsort([1,2,3,4,5],Res).
+Res = [1,2,3,4,5] ? ;
+no
+| ?- qsort([3,4,2,1,5,6], Res).
+Res = [1,2,3,4,5,6] ? ;
+no
+
+*/

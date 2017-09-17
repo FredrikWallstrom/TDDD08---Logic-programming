@@ -22,7 +22,7 @@ min_in_list([X, Y | L], Min) :-
 % L1 is the same list as L but without the element E.
 delete_from_list([E|L], E, L).
 delete_from_list([H|L], E, [H|L1]) :-
-	H \= E,
+	dif(H, E)
 	delete_from_list(L, E, L1).
 
 % ssort(L, LS).

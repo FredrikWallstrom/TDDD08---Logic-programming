@@ -11,9 +11,14 @@ connected(e,g).
 connected(f,g).
 
 % path(X,Y).
-% Two nodes X and Y are related if there is a edge between them.
+% It is a path between two nodes X and Y,
+% if there is a path between X and Z, then
+% also a path between Z and Y.
 path(X,Y) :-
 	connected(X,Y).
+path(X,Y) :-
+	connected(X,Z),
+	path(Z,Y).
 
 % path(X,Y,[X,Y]).
 % It is a path between two nodes if them are connected.

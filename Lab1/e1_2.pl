@@ -42,10 +42,10 @@ npath(X,Y,[N|List]) :-
 	length(List,N).
 
 /* Example queries for the program are listed below.
-1. | ?- path(a,c). % Is a and c related to each other.
+1. | ?- path(a,c). % Is there a path between a and c.
 	yes
-2. | ?- path(d,g). % Is d and g related to each other.
-	no
+2. | ?- path(d,g). % Is there a path between d and g.
+	yes
 3. | ?- path(a,e,L). % Is there a path between a and e, store the path in L.
 	L = [a,b,c,e] ? ;
 	L = [a,c,e] ? :

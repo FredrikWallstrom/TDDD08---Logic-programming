@@ -1,4 +1,4 @@
-% Exercise 2.1
+% Exercise 2.2
 
 % middle(X,Xs)
 % X is the middle element in the list Xs

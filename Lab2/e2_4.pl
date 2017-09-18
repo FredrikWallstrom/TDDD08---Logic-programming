@@ -6,7 +6,7 @@ union(S1, S2, Res) :-
 	append(S1, S2, Unsorted),
 	sort(Unsorted,Res).
 
-% intersection(S)
+% intersection(S1, S2, Res)
 % Res is the intersection of the sets S1 and S2.
 intersection([], _, []).
 intersection([H1|S1], S2, Res) :-

@@ -1,8 +1,5 @@
 % Exercise 2.3
 
-% Fact
-id(I).
-
 % num(N).
 % N is a number if N is an integer of a floating point number.
 num(N) :- number(N).

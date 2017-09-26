@@ -1,8 +1,42 @@
 init(state(3,3,0,0)).
 goal(state(0,0,3,3)).
 
-add(X,Y, state(R)) :-
-	R is X+Y.
+% Move one Cannibal, Cannibal rower.
+action(state(CannibalLeft, MissionaryLeft, CannibalRight, MissionaryRight),
+       state(CannibalLeftNew, MissionaryLeft, CannibalRightNew, MissionaryRight)) :-
+	CannibalLeftNewTmp is CannibalLeft - 1,
+	CannibalRightNewTmp is CannibalRight + 1,
+	
+	CannibalLeftNewTmp >= 0,
+	CannibalLeftNewTmp =<  MissionaryLeft,
+
+	CannibalRightNewTmp =< 3,
+	(CannibalRightNewTmp =< MissionaryRight ; MissionaryRight == 0),
+	
+	CannibalLeftNew is CannibalLeft - 1,
+	CannibalRightNew is CannibalRight + 1.
+
+% Move one Missionary, Cannibal rower.
+action(state(CannibalLeft, MissionaryLeft, CannibalRight, MissionaryRight),
+       state(CannibalLeft, MissionaryLeftNew, CannibalRight, MissionaryRightNew)) :-
+	MissionaryLeftNewTmp is MissionaryLeft - 1,
+	MissionaryRightNewTmp is MissionaryRight + 1,
+	
+	MissionaryLeftNewTmp >= 0,
+	MissionaryLeftNewTmp =<  CannibalLeft,
+	
+	MissionaryRightNewTmp >=  CannibalRight,
+	MissionaryRightNewTmp =< 3,
+	
+	CannibalLeftNew is CannibalLeft - 1,
+	CannibalRightNew is CannibalRight + 1.
+
+% Move one Cannibal, Missionary rower.
+
+% Move one Missionary, Missionary rower.
+
+
+
 % Move two cannibals
 action(state(CL, ML, CR, MR), state(CL1, ML, CR1, MR)) :-
 	Tmp1 is CL - 2,
@@ -84,27 +118,8 @@ bf_search([[S|Path]|_], [S|Path]) :-
 	goal(S).
 bf_search([[S1|Path]|Partials], FinalPath) :-
 	findall(S2, action(S1, S2), NewStates),
-	expand([S1|Path], NewStates1, NewPaths),
+	expand([S1|Path], NewStates, NewPaths),
 	append(Partials, NewPaths, NewPartials),
 	bf_search(NewPartials, FinalPath).
 expand(L1, L2, L3) :-
 	findall([X|L1], member(X,L2), L3).
-
-
-
-
-
-
-
-remove_explored_states([], _, []).
-remove_explored_states([X|L], Partials, N1) :-
-	r(X, Partials, N2),
-	remove_explored_states(L, Partials, N2).
-r(_, [], []).
-r(X, [Y|L2], [X|L3]) :-	      
-	dif(X,Y),
-	r(X, L2, L3).
-r(X, [X|L2], L3) :-
-	r(X, L2, L3).
-	
-	

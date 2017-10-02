@@ -106,6 +106,7 @@ df_search([S1|Visited], Path) :-
 bf_search(Path) :-
 	init(S0),
 	bf_search([[S0]], [], Path).
+%	reverse_list(UnreversedPath, Path, []).
 
 % bf_maze(Paths, FinalPath).
 % Paths is a list of candidate branches, FinalPath is the solution.
@@ -139,3 +140,8 @@ subtract([H|T], L2, L3) :-
 subtract([H|T], L2, [H|T1]) :-
 	subtract(T, L2, T1).
 
+% reverse_list(L1, L2, SoFar).
+% If L1 is a list than L2 is the reversed list of L1.
+reverse_list([], Res, Res).
+reverse_list([H|T], Res, L) :-
+	reverse_list(T, Res, [H|L]).

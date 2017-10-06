@@ -2,6 +2,8 @@
 
 % sorted(L).
 % L is sorted if the elements is in ascending order.
+sorted([]).
+sorted([_]).
 sorted([X1, X2]) :-
 	X1<X2.
 sorted([X1, X2 | L]) :-
@@ -56,6 +58,12 @@ qsort([N | L], LS) :-
 
 /* Example queries for the program are listed below.
 
+| ?- sorted([]).
+yes
+| ?- sorted([1]).
+yes
+| ?- sorted([1,2]).
+yes   
 | ?- sorted([1,2,3,4,5]).
 yes
 | ?- sorted([5,4,3,2,1]).

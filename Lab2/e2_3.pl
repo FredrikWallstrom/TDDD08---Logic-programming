@@ -4,6 +4,8 @@
 % N is a number if N is an integer of a floating point number.
 num(N) :- number(N).
 
+% exists(S0, I)
+% Check if identifier I exists in the initial environment S0.
 exists([[I, _]|_S0], I).
 exists([[_I1, _]|S0], I) :-
 	exists(S0, I).
@@ -20,19 +22,27 @@ execute(S0, set(id(I), E), Sn) :-
 	 arith_expr(S0, E, Replacement),
 	 Sn = [[I, Replacement]|S0]).
 execute(S0, if(If, Then, Else), Sn) :-
-	(bool_expr(S0, If, Res), Res = 1, execute(S0, Then, Sn)) ;
-	(bool_expr(S0, If, Res), Res = 0, execute(S0, Else, Sn)).
+	(bool_expr(S0, If, Res),
+	 Res = 1,
+	 execute(S0, Then, Sn)) ;
+	(bool_expr(S0, If, Res),
+	 Res = 0,
+	 execute(S0, Else, Sn)).
 execute(S0, while(If, Then), Sn) :-
-	bool_expr(S0, If, Res),
-	(Res = 1, execute(S0, Then, SubRes), execute(SubRes, while(If, Then), Sn)) ;
-	(Res = 0, Sn = S0).
+	(bool_expr(S0, If, Res),
+	 Res = 1,
+	 execute(S0, Then, SubRes),
+	 execute(SubRes, while(If, Then), Sn)) ;
+	(bool_expr(S0, If, Res),
+	 Res = 0,
+	 Sn = S0).
 execute(S0, seq(C1, C2), Sn) :-
 	execute(S0, C1, Res),
 	execute(Res, C2, Sn).
 
-% expr(S0, E).
+% expr(S0, E, Res).
 % If S0 is the initial binding environment,
-% than E is the boolean expression.
+% than E is the boolean expression and Res is the result from the boolean expression.
 bool_expr(S0, X < Y, Z) :- 
 	(arith_expr(S0, X, Z1),
 	 arith_expr(S0, Y, Z2),
@@ -43,25 +53,41 @@ bool_expr(S0, X < Y, Z) :-
 	 Z1 >= Z2,
 	 Z is 0).
 bool_expr(S0, X =< Y, Z) :-
-	arith_expr(S0, X, Z1),
-	arith_expr(S0, Y, Z2),
-	(Z1 =< Z2, Z is 1) ;
-	(Z1 > Z2, Z is 0).
+	(arith_expr(S0, X, Z1),
+	 arith_expr(S0, Y, Z2),
+	 Z1 =< Z2,
+	 Z is 1) ;
+	(arith_expr(S0, X, Z1),
+	 arith_expr(S0, Y, Z2),
+	 Z1 > Z2,
+	 Z is 0).
 bool_expr(S0, X == Y, Z) :-
-	arith_expr(S0, X, Z1),
-	arith_expr(S0, Y, Z2),
-	(Z1 == Z2, Z is 1) ;
-	(Z1 \== Z2, Z is 0).
+	(arith_expr(S0, X, Z1),
+	 arith_expr(S0, Y, Z2),
+	 Z1 == Z2,
+	 Z is 1) ;
+	(arith_expr(S0, X, Z1),
+  	 arith_expr(S0, Y, Z2),
+	 Z1 \== Z2,
+	 Z is 0).
 bool_expr(S0, X > Y, Z) :-
-	arith_expr(S0, X, Z1),
-	arith_expr(S0, Y, Z2),
-	(Z1 > Z2, Z is 1) ;
-	(Z1 =< Z2, Z is 0).
+	(arith_expr(S0, X, Z1),
+	 arith_expr(S0, Y, Z2),
+	 Z1 > Z2,
+	 Z is 1) ;
+	(arith_expr(S0, X, Z1),
+	 arith_expr(S0, Y, Z2),
+	 Z1 =< Z2,
+	 Z is 0).
 bool_expr(S0, X >= Y, Z) :-
-	arith_expr(S0, X, Z1),
-	arith_expr(S0, Y, Z2),
-	(Z1 >= Z2, Z is 1) ;
-	(Z1 < Z2, Z is 0).
+	(arith_expr(S0, X, Z1),
+	 arith_expr(S0, Y, Z2),
+	 Z1 >= Z2,
+	 Z is 1) ;
+	(arith_expr(S0, X, Z1),
+	 arith_expr(S0, Y, Z2),
+	 Z1 < Z2,
+	 Z is 0).
 
 % arith_expr(S0, A, Z).
 % If S0 is the initial binding environment and A is an arithmetic expression.
@@ -115,10 +141,10 @@ no
 Sn = [[y,1],[x,3]] ? ;
 no
 | ?- execute([[x,1],[y,3]], if(id(x) < num(3), set(id(x), num(3)), set(id(x), num(0))), Sn).
-Sn = [[y,3],[x,3]] ? ;
+Sn = [[x,3],[y,3]] ? ;
 no
 | ?- execute([[x,3],[y,3]], if(id(x) < num(3), set(id(x), num(3)), set(id(x), num(0))), Sn).
-Sn = [[y,3],[x,0]] ? ;
+Sn = [[x,0],[y,3]] ? ;
 no
 | ?- execute([[x,3]], seq(set(id(y),num(1)), while(id(x) > num(1), seq(set(id(y), id(y) * id(x)), set(id(x), id(x) - num(1))))), Sn).
 Sn = [[y,6],[x,1]] ? ;

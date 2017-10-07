@@ -67,12 +67,19 @@ qsort([N | L], LS) :-
 	qsort(More, L2),
 	append(L1,  [N | L2], LS).
 
+% sublist(List, Sublist).
+% Sublist is a sublist of List.
+sublist([], []).
+sublist([H1|T1], [H1|T2]) :-
+	sublist(T1, T2).
+sublist([_|T1], S2) :-
+	sublist(T1, S2).
 
 % powerset(S, Res).
 % Res is the powerset of the set S.
 powerset(S, Res) :-
-	sort(S, Sorted),
-	findall(X, append(X, _, Sorted), Res).
+	qsort(S, Sorted),
+	findall(X, sublist(Sorted, X), Res).
 
 /* Example queries for the program are listed below.
 
@@ -109,8 +116,17 @@ no
 | ?- intersection([], [a,b,c,d,e,f,g,h], Res).
 Res = [] ? ;
 no
-| ?- powerset([a,b,c,d,e], Res).
-Res = [[],[a],[a,b],[a,b,c],[a,b,c,d],[a,b,c,d,e]] ? ;
+| ?- powerset([b,a,c], Res).
+Res = [[a,b,c],[a,b],[a,c],[a],[b,c],[b],[c],[]] ? ;
+no
+| ?- powerset([b,a], Res).
+Res = [[a,b],[a],[b],[]] ? ;
+no
+| ?- powerset([a,a], Res).
+Res = [[a,a],[a],[a],[]] ? ;
+no
+| ?- powerset([a,b,c], Res).
+Res = [[a,b,c],[a,b],[a,c],[a],[b,c],[b],[c],[]] ? ;
 no
 
 */
